@@ -40,8 +40,8 @@
  * if the display is not touched for the period of the lcd idle timer.
  *
  * Idle Timer:  1: LCD_DIM_OFF,         2: LCD_DIM_5_SECONDS.   3: LCD_DIM_10_SECONDS,
- *              4: LCD_DIM_30_SECONDS,  4: LCD_DIM_60_SECONDS,  5: LCD_DIM_120_SECONDS,
- *              6: LCD_DIM_300_SECONDS, 7: LCD_DIM_CUSTOM_SECONDS
+ *              4: LCD_DIM_30_SECONDS,  5: LCD_DIM_60_SECONDS,  6: LCD_DIM_120_SECONDS,
+ *              7: LCD_DIM_300_SECONDS, 8: LCD_DIM_CUSTOM_SECONDS
  *
  */
 #define DEFAULT_LCD_BRIGHTNESS      11  // 11: LCD_100_PERCENT - Brightness value from list
@@ -62,7 +62,7 @@
  * Options: BLACK, BLUE, BROWN, BRRED, CYAN, GBLUE, GRAY, GREEN, MAGENTA, RED, WHITE, YELLOW
  */
 #define ST7920_BKCOLOR BLACK
-#define ST7920_FNCOLOR YELLOW
+#define ST7920_FNCOLOR RED
 
 /**
  *  Text displayed at the top of the TFT in Marlin Mode.
@@ -75,7 +75,7 @@
  *  Options:  0: Disabled. RECOMMENDED FOR TFT24
  *            1: Enabled Marlin Fullscreen mode.
  */
-#define DEFAULT_ST7920_FULLSCREEN_MODE 0 // 0: Disabled. RECOMMENDED FOR TFT24
+#define DEFAULT_ST7920_FULLSCREEN_MODE 1 // 0: Disabled. RECOMMENDED FOR TFT24
 
 /**
  * Clean Mode Switching Support
@@ -101,7 +101,7 @@
  *
  * :[2400, 9600, 19200, 38400, 57600, 115200, 250000, 500000, 1000000]
  */
-#define BAUDRATE 115200
+#define BAUDRATE 250000
 
 /**
  * Default Touch Mode Language
@@ -143,10 +143,10 @@
 #define FAN_NUM      1    // set in 1~6
 
 //                       PLA      PETG       ABS
-#define PREHEAT_BED      {60,      70,       100}
-#define PREHEAT_HOTEND   {200,     250,      230}
+#define PREHEAT_BED      {60,      85,       110}
+#define PREHEAT_HOTEND   {220,     245,      250}
 
-#define HEAT_MAX_TEMP    {150,    275,       275,       275,       275,       275,       275}    //max temperature can be set
+#define HEAT_MAX_TEMP    {110,    300,       275,       275,       275,       275,       275}    //max temperature can be set
 #define HEAT_SIGN_ID     {"B:",   "T0:",     "T1:",     "T2:",     "T3:",     "T4:",     "T5:"}
 #define HEAT_DISPLAY_ID  {"Bed",  "T0",      "T1",      "T2",      "T3",      "T4",      "T5"}
 #define HEAT_CMD         {"M140", "M104 T0", "M104 T1", "M104 T2", "M104 T3", "M104 T4", "M104 T5" };
@@ -237,14 +237,12 @@
 
 /**
  * SD support
- * The TFT will auto configure M27 AutoReport with M115 command
- * Set the time interval to poll SD Printing status if Marlin reports M27 disabled.
+ * Starting from Marlin Bugfix 2.0.x Distribution Date: 2020-04-27 & above, The TFT will auto detect
+ * On-Board SD Card and auto-configure M27 AutoReport with M115 command
+ * Set the time interval to poll SD Printing status if Marlin reports M27 AutoReport as disabled.
  */
-#define ONBOARD_SD_SUPPORT
-#ifdef ONBOARD_SD_SUPPORT
-  #define M27_REFRESH                3        // Time in sec for M27 command
-  #define M27_WATCH_OTHER_SOURCES    true     // if true the polling on M27 report is always active. Case: SD print started not from TFT35
-#endif
+#define M27_REFRESH                3        // Time in sec for M27 command
+#define M27_WATCH_OTHER_SOURCES    true     // if true the polling on M27 report is always active. Case: SD print started not from TFT35
 
 /**
  * Power Loss Recovery
@@ -330,6 +328,6 @@
 #define PRINT_END_GCODE "G90\nG1 E-4\nG92 E0\nM18\n" // Switch to absolute positioning, reduce filament pressure by performing small retract, reset extruder position, disable steppers
 
 // Cancel G-code - run this G-code after canceling print
-#define CANCEL_PRINT_GCODE "G28 XY R10\n" // Raise Z 10mm before homing X & Y
+#define PRINT_CANCEL_GCODE "G28 XY R10\n" // Home XY and raise Z 10mm
 
 #endif
